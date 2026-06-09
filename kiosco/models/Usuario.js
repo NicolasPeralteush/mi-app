@@ -43,6 +43,7 @@ const Usuario = {
         if (data.rol) { fields.push('rol = ?'); params.push(data.rol); }
         if (data.activo !== undefined) { fields.push('activo = ?'); params.push(data.activo); }
         if (data.password) { fields.push('password = ?'); params.push(data.password); }
+        fields.push('updated_at = NOW()');
         if (fields.length === 0) return false;
         params.push(id);
         await db.query(`UPDATE ksc_usuarios SET ${fields.join(', ')} WHERE id = ?`, params);

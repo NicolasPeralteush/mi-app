@@ -66,7 +66,7 @@ const Producto = {
     async update(id, data) {
         await db.query(
             `UPDATE ksc_productos SET codigo = ?, nombre = ?, precio_compra = ?, precio_venta = ?,
-             stock = ?, stock_minimo = ?, activo = ? WHERE id = ?`,
+             stock = ?, stock_minimo = ?, activo = ?, updated_at = NOW() WHERE id = ?`,
             [data.codigo, data.nombre, data.precio_compra, data.precio_venta,
              data.stock, data.stock_minimo, data.activo, id]
         );

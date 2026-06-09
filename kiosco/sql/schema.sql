@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS ksc_usuarios (
     rol ENUM('admin','cajero') NOT NULL DEFAULT 'cajero',
     activo TINYINT(1) NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
     ultimo_acceso DATETIME DEFAULT NULL,
     INDEX idx_usuario (usuario),
     INDEX idx_activo (activo)
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS ksc_productos (
     stock_minimo DECIMAL(9,2) NOT NULL DEFAULT 0,
     activo TINYINT(1) NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
     INDEX idx_codigo (codigo),
     INDEX idx_nombre (nombre),
     INDEX idx_activo_stock (activo, stock)

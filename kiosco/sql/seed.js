@@ -23,6 +23,19 @@ async function main() {
     try {
         conn = await mysql.createConnection(config);
 
+        // Limpiar tablas existentes
+        const dropTables = `
+            DROP TABLE IF EXISTS ksc_detalle_venta;
+            DROP TABLE IF EXISTS ksc_caja;
+            DROP TABLE IF EXISTS ksc_auditoria;
+            DROP TABLE IF EXISTS ksc_ventas;
+            DROP TABLE IF EXISTS ksc_productos;
+            DROP TABLE IF EXISTS ksc_usuarios;
+            DROP TABLE IF EXISTS ksc_config;
+        `;
+        await conn.query(dropTables);
+        console.log('✓ Tablas anteriores eliminadas');
+
         // Ejecutar schema
         const schemaPath = path.join(__dirname, 'schema.sql');
         const schema = fs.readFileSync(schemaPath, 'utf8');
