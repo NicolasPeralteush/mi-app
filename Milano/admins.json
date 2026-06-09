@@ -1,0 +1,5 @@
+[
+	{"username":"admin","passwordHash":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8","role":"admin"},
+	{"username":"edgar","passwordHash":"677ab407d8a70e90a8f9e5e350ad37fa241106665872afcd94f2c6c5e76798c5","role":"admin"},
+	{"username":"root","passwordHash":"d5e1b5ec4db7d9efb0577f3415f9bcacaa8937366169ee00c155402f203f85b2","role":"superadmin"}
+]

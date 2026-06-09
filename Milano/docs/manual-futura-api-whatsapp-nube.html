@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual Futuro API WhatsApp y Nube - Il Milano</title>
+  <link rel="stylesheet" href="./manual-style.css">
+</head>
+<body>
+  <main class="page">
+    <section class="cover">
+      <div class="brand">Il Milano - Evolucion</div>
+      <h1>Manual de Futura Implementacion (API WhatsApp + Nube)</h1>
+      <p class="hint">Manteniendo el sistema local original como respaldo.</p>
+    </section>
+
+    <h2>1. Objetivo</h2>
+    <p>Migrar gradualmente a una arquitectura cloud con API oficial de WhatsApp, sin perder la version local actual.</p>
+
+    <h2>2. Principio clave: coexistencia</h2>
+    <div class="card">
+      <p><strong>Local actual:</strong> se mantiene funcionando (modo principal o backup).</p>
+      <p><strong>Nube nueva:</strong> se construye en paralelo y se activa por etapas.</p>
+    </div>
+
+    <h2>3. Arquitectura recomendada (simple)</h2>
+    <ul>
+      <li><strong>Servicio API:</strong> Node.js en nube (Render/Railway/VPS).</li>
+      <li><strong>DB:</strong> Postgres o MySQL para usuarios, asignaciones y reportes.</li>
+      <li><strong>Cola (opcional):</strong> para reintentos de envio.</li>
+      <li><strong>Storage:</strong> logs y respaldos.</li>
+      <li><strong>Panel:</strong> mismo frontend, cambiando base URL a API cloud.</li>
+    </ul>
+
+    <h2>4. Fases de implementacion</h2>
+    <table>
+      <thead><tr><th>Fase</th><th>Accion</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Fase 1</td><td>Separar config local/cloud con variables env.</td><td>Codigo preparado para dos entornos.</td></tr>
+        <tr><td>Fase 2</td><td>Mover estado (asignaciones/procesados) a DB cloud.</td><td>Reportes mas robustos.</td></tr>
+        <tr><td>Fase 3</td><td>Integrar API oficial WhatsApp (Cloud API).</td><td>Canal productivo escalable.</td></tr>
+        <tr><td>Fase 4</td><td>Habilitar trafico gradual cloud.</td><td>Migracion segura sin corte.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>5. Mantener el local como respaldo</h2>
+    <ul>
+      <li>No borrar <code>index.js</code> local ni <code>auth_info_baileys/</code>.</li>
+      <li>Documentar comandos de arranque local de emergencia.</li>
+      <li>Tener export diario de logs y estado.</li>
+      <li>Definir procedimiento de rollback: cloud - local.</li>
+    </ul>
+
+    <h2>6. Checklist tecnico minimo para nube</h2>
+    <ol>
+      <li>HTTPS habilitado.</li>
+      <li>Manejo de secretos en variables seguras.</li>
+      <li>Rate limit y logs de auditoria.</li>
+      <li>Backups automaticos de DB.</li>
+      <li>Monitoreo basico (errores, latencia, uso).</li>
+    </ol>
+
+    <h2>7. Roles sugeridos para la etapa cloud</h2>
+    <ul>
+      <li><strong>admin:</strong> opera chats, asigna, gestiona usuarios.</li>
+      <li><strong>operador:</strong> toma y responde chats.</li>
+      <li><strong>viewer:</strong> solo lectura/reportes.</li>
+    </ul>
+
+    <h2>8. Plan de continuidad</h2>
+    <div class="card">
+      <h3>Si falla cloud:</h3>
+      <ol>
+        <li>Desviar operacion al servidor local.</li>
+        <li>Levantar <code>node index.js</code> local.</li>
+        <li>Continuar atencion por panel local.</li>
+      </ol>
+    </div>
+
+    <h2>9. Exportar a PDF</h2>
+    <p>Abrir este archivo y usar <code>Ctrl + P</code> - Guardar como PDF.</p>
+
+    <p class="footer">Documento: manual-futura-api-whatsapp-nube.html</p>
+  </main>
+</body>
+</html>

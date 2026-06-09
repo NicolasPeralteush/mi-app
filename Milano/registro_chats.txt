@@ -1,0 +1,61 @@
+
+[3/6/2026, 10:26:24] 👤 Edgar Gandini: Hola
+JID -> 29974627143806@lid
+🤖 Bot: Hola, ¿cómo andás? ¿Necesitás ayuda con algo o querés pedir algo de Il Milano? ¿Te lo envío o lo pasás a buscar?
+---
+[3/6/2026, 10:27:35] 👤 Edgar Gandini: Quiero pedir una regina con papas
+JID -> 29974627143806@lid
+🤖 Bot: Una Milanesa La Regina, ¿la querés de ternera o de pollo? Y ya viene con papas fritas incluidas, ¿quierés agregar algo más como una bebida o un postre?
+---
+[3/6/2026, 10:28:13] 👤 Edgar Gandini: De ternera. No agrego nada
+JID -> 29974627143806@lid
+🤖 Bot: Una Milanesa La Regina de ternera, con papas fritas incluidas. El total es de $19.500. ¿Te lo envío o lo pasás a buscar?
+---
+[3/6/2026, 10:28:30] 👤 Edgar Gandini: Paso a buscar
+JID -> 29974627143806@lid
+🤖 Bot: Genial, el retiro estará listo en aproximadamente 20 minutos. ¿Podés decirme tu nombre y apellido para preparar el pedido, por favor? Y también, ¿con qué forma de pago vas a cancelar? Efectivo, débito, crédito o QR.
+---
+[3/6/2026, 10:30:50] 👤 Edgar Gandini: Edgar. Pago con efectivo
+JID -> 29974627143806@lid
+🤖 Bot: ¡Perfecto, Edgar! Tu pedido de Milanesa La Regina de ternera con papas fritas incluidas estará listo para retirar en 20 minutos. El total es de $19.500, que pagarás con efectivo. ¿Es todo correcto? ¡Gracias por elegir Il Milano! ¡Amore per i milanesi! Te esperamos en Av. Marcelo T. de Alvear 1150.
+---
+[3/6/2026, 10:33:39] 👤 Edgar Gandini: Hola! Tengo un reclamo. No me llego el pedido
+JID -> 29974627143806@lid
+🤖 Bot: Lamento mucho esta situación, vamos a solucionarlo. ¿Podés decirme tu nombre y el número de pedido, por favor? ¿Cuál era el pedido que no te llegó? Te vamos a contactar en los próximos minutos para solucionarlo. ¿Cuál es tu número de teléfono, por favor?
+---
+[3/6/2026, 10:34:00] 👤 Edgar Gandini: Edgar. Pedí una retina de ternera y nunca llego
+JID -> 29974627143806@lid
+🤖 Bot: Lamento mucho la demora, Edgar. Sin embargo, quería aclarar que no tenemos registro de un pedido de "retina de ternera". ¿Es posible que hayas pedido algo diferente, como una Milanesa La Regina de ternera, que es un plato que tenemos en nuestro menú? ¿Podés verificar si eso es lo que pediste? Estoy aquí para ayudarte a resolver el problema.
+---
+[3/6/2026, 10:35:35] 👤 Edgar Gandini: Hola! Tenía un pedido pero lo quiero cambiar todo. Puede ser?
+JID -> 29974627143806@lid
+🤖 Bot: Lamento mucho la situación, Edgar. Sin embargo, para poder ayudarte mejor, necesito saber más detalles sobre el pedido original y qué cambios querés hacer. ¿Podés decirme el número de pedido o recordarme qué habías pedido originalmente? ¿Qué es lo que querés cambiar exactamente? Estoy aquí para ayudarte a encontrar una solución.
+---
+[3/6/2026, 10:39:12] 👤 Edgar Gandini: Hola! Quiero reservar una mesa para 4 el viernes a las 22hs puede ser?
+JID -> 29974627143806@lid
+🤖 Bot: ¡Claro que sí! Me alegra que quieras reservar una mesa en Il Milano. Para confirmar la reserva, necesito saber tu nombre y apellido, por favor. También te confirmo que el viernes a las 22hs es dentro de nuestro horario de atención. ¿Cuántos adultos y niños van a venir, por favor? Y ¿necesitás alguna necesidad de accesibilidad especial?
+---
+[3/6/2026, 10:40:46] 👤 Edgar Gandini: Edgardo Gandini van 4 adultos sin niños
+JID -> 29974627143806@lid
+🤖 Bot: ¡Genial, Edgardo! He reservado una mesa para 4 adultos el viernes a las 22hs. Quería confirmarte que tenemos una tolerancia de 15 minutos sin previo aviso, así que por favor, tené en cuenta eso. ¿Es todo correcto? Tu reserva está confirmada. ¡Esperamos verte el viernes! ¿Necesitás algo más o está todo listo?
+---
+[3/6/2026, 10:44:59] 👤 Edgar Gandini: Hola te puedo pedir una regina de ternera con papas y una Coca?
+JID -> 29974627143806@lid
+🤖 Bot: ¡Claro que sí! Una Milanesa La Regina de ternera con papas fritas incluidas y una Coca-Cola. El total es de $19.500 por la milanesa y $2.800 por la Coca-Cola, entonces el total es de $22.300. ¿Te lo envío o lo pasás a buscar?
+---
+[3/6/2026, 10:45:23] 👤 Edgar Gandini: Podes enviarla a saavedra 186
+JID -> 29974627143806@lid
+🤖 Bot: ¡Genial! Te voy a enviar la Milanesa La Regina de ternera con papas fritas incluidas y una Coca-Cola a Saavedra 186. El costo del envío depende de la distancia, pero como Saavedra 186 está dentro de nuestra zona de cobertura, te puedo ofrecer el envío por $2.800, que es el costo mínimo. El total del pedido sería de $25.100. ¿Es correcto? ¿Con qué forma de pago vas a cancelar? Efectivo o transferencia?
+---
+[3/6/2026, 10:47:51] 👤 Edgar Gandini: Perfecto
+JID -> 29974627143806@lid
+🤖 Bot: ¡Excelente! Tu pedido de Milanesa La Regina de ternera con papas fritas incluidas y una Coca-Cola se está preparando para ser enviado a Saavedra 186. El total es de $25.100, que pagarás con... (espero que me hayas dicho, pero no lo has hecho) ¿Con qué forma de pago vas a cancelar? Si es con efectivo, por favor, tené listo el dinero para cuando llegue el pedido. Si es con transferencia, te voy a pedir que me envíes el comprobante para confirmar el pago. ¿Cuál es tu forma de pago preferida?
+---
+[3/6/2026, 10:55:44] 👤 Hector Contrera: Ahi me avisaron que bajo el huevo
+JID -> 145938794475595@lid
+🤖 Bot: Parece que hubo un problema con tu pedido. Lamento mucho esta situación, vamos a solucionarlo. ¿Podrías decirme tu número de pedido y describirme un poco más lo que pasó con el huevo? Te vamos a contactar en los próximos minutos para solucionarlo.
+---
+[3/6/2026, 10:56:38] 👤 Hector Contrera: Te quedaria en 5.600 el maple
+JID -> 145938794475595@lid
+🤖 Bot: No entiendo muy bien a qué te refieres con "el maple". ¿Podrías explicarme un poco más? ¿Es un producto que estás comprando o algo relacionado con un pedido? Estoy aquí para ayudarte, así que por favor, dame más detalles para que pueda entender mejor.
+---

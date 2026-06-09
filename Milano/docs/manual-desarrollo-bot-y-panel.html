@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de Desarrollo Bot y Panel - Il Milano</title>
+  <link rel="stylesheet" href="./manual-style.css">
+</head>
+<body>
+  <main class="page">
+    <section class="cover">
+      <div class="brand">Il Milano - Desarrollo</div>
+      <h1>Manual de Desarrollo (Bot + Panel)</h1>
+      <p class="hint">Guia simple para mantenimiento local del proyecto.</p>
+    </section>
+
+    <h2>1. Estructura del proyecto</h2>
+    <ul>
+      <li><code>index.js</code>: backend principal (WhatsApp, API interna, auth admin, WS).</li>
+      <li><code>panel/index.html</code>: estructura del panel.</li>
+      <li><code>panel/styles.css</code>: estilos del panel.</li>
+      <li><code>panel/app.js</code>: logica del frontend.</li>
+      <li><code>prompt.txt</code>: prompt del asistente.</li>
+      <li><code>registro_chats.txt</code>: log de conversaciones.</li>
+      <li><code>auth_info_baileys/</code>: sesion local de WhatsApp.</li>
+    </ul>
+
+    <h2>2. Preparacion inicial local</h2>
+    <ol>
+      <li>Abrir terminal en carpeta del proyecto.</li>
+      <li>Instalar dependencias: <code>npm install</code></li>
+      <li>Configurar <code>.env</code> (API key + admin login).</li>
+      <li>Ejecutar: <code>node index.js</code></li>
+    </ol>
+
+    <h2>3. Variables importantes en .env</h2>
+    <pre>GROQ_API_KEY=...
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD_HASH=hash_sha256
+PANEL_PORT=3000
+ADMIN_TIME_ZONE=America/Argentina/Cordoba</pre>
+
+    <h2>4. Desarrollo del backend</h2>
+    <div class="card">
+      <h3>Rutas clave</h3>
+      <ul>
+        <li><code>POST /admin/login</code>, <code>GET /admin/me</code></li>
+        <li><code>POST /admin/claim</code>, <code>/admin/release</code>, <code>/admin/processed</code></li>
+        <li><code>POST /send</code>, <code>/pause</code>, <code>/resume</code> (protegidas)</li>
+      </ul>
+      <h3>Eventos WS clave</h3>
+      <ul>
+        <li><code>init</code>, <code>status</code>, <code>message</code>, <code>incoming</code></li>
+        <li><code>admin_assignment</code>, <code>admin_processed</code>, <code>admin_stats</code></li>
+      </ul>
+    </div>
+
+    <h2>5. Desarrollo del frontend (panel)</h2>
+    <ul>
+      <li>Modificar HTML en <code>panel/index.html</code> (estructura).</li>
+      <li>Modificar estilos en <code>panel/styles.css</code>.</li>
+      <li>Modificar logica en <code>panel/app.js</code>.</li>
+      <li>Probar flujo login - tomar chat - pausar - enviar - procesar.</li>
+    </ul>
+
+    <h2>6. Crear un admin nuevo</h2>
+    <ol>
+      <li>Generar hash SHA256 de la clave.</li>
+      <li>Actualizar <code>.env</code> con <code>ADMIN_USERS_JSON</code> o admin unico.</li>
+      <li>Reiniciar servidor.</li>
+    </ol>
+
+    <h2>7. Usuarios no-admin (estado actual)</h2>
+    <p>Actualmente no hay rol viewer. Solo existe acceso admin.</p>
+    <p class="hint">Si se requiere, implementar roles por usuario y chequeo por endpoint.</p>
+
+    <h2>8. Checklist de pruebas antes de entregar</h2>
+    <ul>
+      <li>Login correcto e incorrecto.</li>
+      <li>Dos admins en paralelo (asignacion y bloqueo de acciones).</li>
+      <li>Pausa/reanudar y envio manual.</li>
+      <li>Marcado de procesado y cambios en reportes.</li>
+      <li>Reconectar WhatsApp y persistencia de estado.</li>
+    </ul>
+
+    <h2>9. Exportar a PDF</h2>
+    <p>Abrir este HTML en navegador y usar <code>Ctrl + P</code> - Guardar como PDF.</p>
+
+    <p class="footer">Documento: manual-desarrollo-bot-y-panel.html</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,117 @@
+:root {
+  --im-black: #0a0a0a;
+  --im-dark: #111111;
+  --im-card: #1a1a1a;
+  --im-border: #2c2c2c;
+  --im-red: #c0392b;
+  --im-gold: #c9a84c;
+  --im-cream: #f5f0e8;
+  --im-muted: #6c6560;
+  --ok: #27ae60;
+  --warn: #d35400;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--im-black);
+  color: var(--im-cream);
+  line-height: 1.55;
+}
+
+.page {
+  width: min(980px, 92vw);
+  margin: 24px auto 48px;
+}
+
+.cover {
+  background: linear-gradient(140deg, var(--im-dark), #191919);
+  border: 1px solid var(--im-border);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 18px;
+}
+
+.brand {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--im-gold);
+  margin-bottom: 8px;
+}
+
+h1, h2, h3 {
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+h1 { font-size: 30px; }
+h2 {
+  margin-top: 26px;
+  font-size: 22px;
+  border-bottom: 1px solid var(--im-border);
+  padding-bottom: 6px;
+}
+h3 { margin-top: 18px; font-size: 17px; }
+
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0 8px 22px; }
+li { margin: 4px 0; }
+
+.card {
+  background: var(--im-card);
+  border: 1px solid var(--im-border);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.hint { color: var(--im-muted); }
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+
+code, pre {
+  font-family: Consolas, "Courier New", monospace;
+}
+pre {
+  background: #0d0d0d;
+  border: 1px solid var(--im-border);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+th, td {
+  border: 1px solid var(--im-border);
+  padding: 8px 10px;
+  text-align: left;
+}
+th {
+  background: #171717;
+  color: var(--im-gold);
+}
+
+.footer {
+  margin-top: 28px;
+  font-size: 12px;
+  color: var(--im-muted);
+}
+
+@media print {
+  @page { margin: 14mm; }
+  html, body { background: #fff; color: #111; }
+  .page { width: 100%; margin: 0; }
+  .cover, .card, pre, th, td {
+    background: #fff;
+    color: #111;
+    border-color: #ccc;
+  }
+  .brand, th { color: #7a5a1a; }
+  h2 { border-color: #ccc; }
+}

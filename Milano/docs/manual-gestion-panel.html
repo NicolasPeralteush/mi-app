@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de Gestion del Panel - Il Milano</title>
+  <link rel="stylesheet" href="./manual-style.css">
+</head>
+<body>
+  <main class="page">
+    <section class="cover">
+      <div class="brand">Il Milano - Operacion</div>
+      <h1>Manual de Gestion del Panel</h1>
+      <p class="hint">Version facil, para uso diario del equipo.</p>
+    </section>
+
+    <section class="card">
+      <h3>Objetivo</h3>
+      <p>Este manual explica como usar el panel para atender chats, asignarlos, responder manualmente y registrar pedidos procesados.</p>
+    </section>
+
+    <h2>1. Ingreso al panel</h2>
+    <ol>
+      <li>Abrir el navegador.</li>
+      <li>Entrar a <code>http://localhost:3000</code>.</li>
+      <li>Ingresar usuario y contrasena de admin.</li>
+    </ol>
+    <p class="warn">Si no inicia sesion, revisar usuario/hash en <code>.env</code>.</p>
+
+    <h2>2. Flujo recomendado por chat</h2>
+    <ol>
+      <li>Seleccionar una conversacion en la barra izquierda.</li>
+      <li>Presionar <strong>Tomar chat</strong>.</li>
+      <li>Si necesitas escribir vos, presionar <strong>Pausar bot</strong>.</li>
+      <li>Enviar mensaje manual.</li>
+      <li>Al terminar, presionar <strong>Marcar procesado</strong>.</li>
+      <li>Opcional: <strong>Liberar</strong> para que otro admin lo tome.</li>
+    </ol>
+
+    <h2>3. Reglas de operacion</h2>
+    <ul>
+      <li>Un chat debe estar asignado para poder operarlo.</li>
+      <li>Si el chat esta asignado a otro admin, se puede ver pero no operar.</li>
+      <li>El conteo de reportes sube al marcar <code>Procesado</code>.</li>
+      <li>Evitar responder manualmente sin pausar si no hace falta.</li>
+    </ul>
+
+    <h2>4. Reportes</h2>
+    <p>En la barra superior se muestran tres metricas:</p>
+    <table>
+      <thead>
+        <tr><th>Metrica</th><th>Significado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Procesados dia</td><td>Chats marcados procesados hoy.</td></tr>
+        <tr><td>Procesados semana</td><td>Chats marcados procesados en la semana actual.</td></tr>
+        <tr><td>Procesados mes</td><td>Chats marcados procesados en el mes actual.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>5. Problemas comunes</h2>
+    <div class="card">
+      <h3>No puedo enviar mensaje</h3>
+      <ul>
+        <li>Verificar que el chat este asignado a tu usuario.</li>
+        <li>Verificar que esta pausado si vas a responder manual.</li>
+      </ul>
+      <h3>No puedo tomar chat</h3>
+      <ul>
+        <li>Puede estar asignado a otro admin.</li>
+      </ul>
+      <h3>No se actualizan metricas</h3>
+      <ul>
+        <li>Solo cambian cuando se marca el chat como procesado.</li>
+      </ul>
+    </div>
+
+    <h2>6. Como imprimir en PDF</h2>
+    <ol>
+      <li>Abrir este archivo HTML en el navegador.</li>
+      <li>Presionar <code>Ctrl + P</code>.</li>
+      <li>Elegir <strong>Guardar como PDF</strong>.</li>
+      <li>Guardar el archivo.</li>
+    </ol>
+
+    <p class="footer">Documento: manual-gestion-panel.html</p>
+  </main>
+</body>
+</html>
