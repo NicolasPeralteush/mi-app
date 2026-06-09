@@ -8,7 +8,7 @@ function getPool() {
             host: process.env.K_DB_HOST || process.env.DB_HOST || 'localhost',
             user: process.env.K_DB_USER || process.env.DB_USER || 'root',
             password: process.env.K_DB_PASS || process.env.DB_PASS || '',
-            database: process.env.K_DB_NAME || process.env.DB_NAME || 'kiosco',
+            database: process.env.K_DB_NAME || process.env.DB_NAME || 'sql10829811',
             port: parseInt(process.env.K_DB_PORT || process.env.DB_PORT || 3306),
             waitForConnections: true,
             connectionLimit: 3,

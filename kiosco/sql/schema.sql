@@ -4,8 +4,8 @@
 -- Tipos de datos ajustados al mínimo necesario
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS kiosco DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE kiosco;
+CREATE DATABASE IF NOT EXISTS sql10829811 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sql10829811;
 
 -- ============================================================
 -- USUARIOS
