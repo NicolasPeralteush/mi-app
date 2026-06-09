@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presupuesto <%= presupuesto.numero %> - Nexus Tech</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --primary: #6c5ce7; --font-family: 'Inter', sans-serif; }
+    body { font-family: var(--font-family); background: #f8f9fc; padding-top: 70px; }
+    .brand { font-weight: 700; font-size: 1.3rem; text-decoration: none; color: #333; }
+    .brand i { color: var(--primary); }
+    .card { border-radius: 16px; border: none; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .card-header { background: white; border-bottom: 1px solid #eee; font-weight: 600; }
+    .btn-primary { background: var(--primary); border: none; border-radius: 50px; }
+    .btn-primary:hover { background: #5a4bd1; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(108,92,231,0.3); }
+    .btn-outline-primary { border-color: var(--primary); color: var(--primary); border-radius: 50px; }
+    .btn-outline-primary:hover { background: var(--primary); color: white; }
+    .table-view th { background: var(--primary); color: white; font-weight: 600; font-size: 0.85rem; border: none; }
+    .totals-box { background: #f0edff; border-radius: 12px; padding: 20px; }
+    .totals-box .total-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+    .totals-box .grand-total { font-size: 1.3rem; font-weight: 700; color: var(--primary); border-top: 2px solid var(--primary); padding-top: 8px; margin-top: 8px; }
+    .presupuesto-header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 20px; }
+    .label { font-weight: 600; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    @media print { .no-print { display: none !important; } body { background: white; padding-top: 0; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand navbar-light bg-white shadow-sm fixed-top no-print">
+    <div class="container">
+      <a class="brand" href="/"><i class="bi bi-hexagon-fill me-2"></i>Nexus<span style="color:var(--primary)">Tech</span></a>
+      <div class="d-flex gap-2">
+        <a href="/presupuestos" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left me-1"></i>Volver</a>
+        <a href="/presupuestos/<%= presupuesto.id %>/pdf" class="btn btn-sm btn-primary"><i class="bi bi-download me-1"></i>Descargar PDF</a>
+        <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer me-1"></i>Imprimir</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+    <div class="card">
+      <div class="card-body p-4 p-md-5">
+        <div class="presupuesto-header d-flex justify-content-between align-items-start">
+          <div>
+            <h2 class="fw-bold mb-1" style="color:var(--primary)">PRESUPUESTO</h2>
+            <p class="text-muted mb-0">N° <strong><%= presupuesto.numero %></strong></p>
+          </div>
+          <div class="text-end">
+            <h5 class="fw-bold mb-1"><%= presupuesto.empresa_nombre %></h5>
+            <small class="text-muted d-block"><%= presupuesto.empresa_direccion %></small>
+            <small class="text-muted d-block"><%= presupuesto.empresa_telefono %></small>
+            <small class="text-muted d-block"><%= presupuesto.empresa_email %></small>
+            <small class="text-muted d-block"><%= presupuesto.empresa_web %></small>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="label">Datos del Cliente</div>
+            <p class="mb-1 fw-semibold"><%= presupuesto.cliente_nombre %> <%= presupuesto.cliente_apellido %></p>
+            <p class="mb-1 text-muted small">CUIT: <%= presupuesto.cliente_cuit %></p>
+            <% if (presupuesto.cliente_telefono) { %><p class="mb-1 text-muted small">Tel: <%= presupuesto.cliente_telefono %></p><% } %>
+            <% if (presupuesto.cliente_direccion) { %><p class="mb-0 text-muted small">Dir: <%= presupuesto.cliente_direccion %></p><% } %>
+          </div>
+          <div class="col-md-3">
+            <div class="label">Fecha</div>
+            <p class="fw-semibold"><%= presupuesto.fecha %></p>
+          </div>
+          <div class="col-md-3">
+            <div class="label">Validez</div>
+            <p class="fw-semibold"><%= presupuesto.validez %></p>
+          </div>
+        </div>
+
+        <div class="table-responsive mb-4">
+          <table class="table table-view">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th class="text-center">Cant.</th>
+                <th class="text-end">P. Unit.</th>
+                <th class="text-center">IVA %</th>
+                <th class="text-end">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% (presupuesto.items || []).forEach(item => { %>
+              <tr>
+                <td><%= item.descripcion %></td>
+                <td class="text-center"><%= item.cantidad %></td>
+                <td class="text-end">$<%= parseFloat(item.precio_unitario).toFixed(2) %></td>
+                <td class="text-center"><%= item.iva %>%</td>
+                <td class="text-end fw-semibold">$<%= parseFloat(item.subtotal).toFixed(2) %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <% if (presupuesto.observaciones) { %>
+              <div class="label mb-2">Observaciones</div>
+              <p class="text-muted small"><%= presupuesto.observaciones %></p>
+            <% } %>
+            <div class="mt-4">
+              <div class="label mb-2">Firma y conformidad</div>
+              <div style="border-top: 1px solid #ccc; width: 250px; margin-top: 50px;"></div>
+              <small class="text-muted">Aclaración / Firma</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="totals-box">
+              <div class="total-line">
+                <span class="text-muted">Subtotal sin IVA:</span>
+                <span class="fw-semibold">$<%= parseFloat(presupuesto.total_sin_iva).toFixed(2) %></span>
+              </div>
+              <div class="total-line">
+                <span class="text-muted">IVA total:</span>
+                <span class="fw-semibold">$<%= parseFloat(presupuesto.total_iva).toFixed(2) %></span>
+              </div>
+              <div class="total-line grand-total">
+                <span>Total final:</span>
+                <span>$<%= parseFloat(presupuesto.total_final).toFixed(2) %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

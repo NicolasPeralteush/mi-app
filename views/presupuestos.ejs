@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presupuestos - Nexus Tech</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --primary: #6c5ce7; --font-family: 'Inter', sans-serif; }
+    body { font-family: var(--font-family); background: #f8f9fc; }
+    .brand { font-weight: 700; font-size: 1.3rem; text-decoration: none; color: #333; }
+    .brand i { color: var(--primary); }
+    .card { border-radius: 16px; border: none; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .card-header { background: white; border-bottom: 1px solid #eee; border-radius: 16px 16px 0 0 !important; font-weight: 600; }
+    .btn-primary { background: var(--primary); border: none; border-radius: 50px; }
+    .btn-primary:hover { background: #5a4bd1; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(108,92,231,0.3); }
+    .btn-outline-primary { border-color: var(--primary); color: var(--primary); border-radius: 50px; }
+    .btn-outline-primary:hover { background: var(--primary); color: white; }
+    .btn-danger-custom { border-radius: 50px; }
+    .logo-preview { max-width: 150px; max-height: 80px; border: 2px dashed #ddd; border-radius: 8px; padding: 8px; margin-top: 8px; display: none; }
+    .table-items th { background: var(--primary); color: white; font-weight: 600; font-size: 0.85rem; }
+    .item-row td { vertical-align: middle; }
+    .item-row .subtotal-display { font-weight: 600; color: var(--primary); }
+    .totals-box { background: #f0edff; border-radius: 12px; padding: 20px; }
+    .totals-box .total-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+    .totals-box .grand-total { font-size: 1.3rem; font-weight: 700; color: var(--primary); border-top: 2px solid var(--primary); padding-top: 8px; margin-top: 8px; }
+    .presupuesto-link { text-decoration: none; color: var(--primary); font-weight: 500; }
+    .presupuesto-link:hover { text-decoration: underline; }
+    .badge-success { background: #d4edda; color: #155724; }
+    @media (max-width: 768px) { .table-items { font-size: 0.8rem; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="brand" href="/"><i class="bi bi-hexagon-fill me-2"></i>Nexus<span style="color:var(--primary)">Tech</span></a>
+      <a href="/" class="btn btn-sm btn-outline-primary"><i class="bi bi-house me-1"></i>Volver al inicio</a>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h4 class="fw-bold mb-1"><i class="bi bi-file-earmark-text me-2" style="color:var(--primary)"></i>Presupuestos</h4>
+        <p class="text-muted mb-0">Crea y gestiona presupuestos profesionales</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-plus-circle me-2" style="color:var(--primary)"></i>Nuevo Presupuesto</span>
+          </div>
+          <div class="card-body">
+            <% if (locals.error) { %>
+              <div class="alert alert-danger alert-dismissible fade show">
+                <i class="bi bi-exclamation-triangle me-2"></i><%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            <% } %>
+
+            <form action="/presupuestos" method="POST" enctype="multipart/form-data" id="presupuestoForm">
+              <div class="row g-3 mb-4">
+                <div class="col-12">
+                  <h6 class="fw-bold" style="color:var(--primary)"><i class="bi bi-building me-2"></i>Datos de la Empresa</h6>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Nombre de la empresa</label>
+                  <input type="text" class="form-control form-control-sm" name="empresa_nombre" value="Nexus Tech" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Dirección</label>
+                  <input type="text" class="form-control form-control-sm" name="empresa_direccion" value="Av. Principal 123, CDMX" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">Teléfono</label>
+                  <input type="text" class="form-control form-control-sm" name="empresa_telefono" value="+52 55 1234 5678" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">Email</label>
+                  <input type="email" class="form-control form-control-sm" name="empresa_email" value="hola@nexustech.com" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">Sitio web</label>
+                  <input type="text" class="form-control form-control-sm" name="empresa_web" value="nexustech.com" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-medium">Logo (PNG o JPG, máx 2MB)</label>
+                  <input type="file" class="form-control form-control-sm" name="logo" id="logoInput" accept=".png,.jpg,.jpeg" />
+                  <img id="logoPreview" class="logo-preview" />
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-12">
+                  <h6 class="fw-bold" style="color:var(--primary)"><i class="bi bi-person me-2"></i>Datos del Cliente</h6>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Nombre <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-sm" name="cliente_nombre" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Apellido <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-sm" name="cliente_apellido" required />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">CUIT <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-sm" name="cliente_cuit" required placeholder="20-12345678-9" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">Teléfono</label>
+                  <input type="text" class="form-control form-control-sm" name="cliente_telefono" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-medium">Dirección</label>
+                  <input type="text" class="form-control form-control-sm" name="cliente_direccion" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Fecha <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control form-control-sm" name="fecha" value="<%= new Date().toISOString().split('T')[0] %>" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-medium">Validez</label>
+                  <input type="text" class="form-control form-control-sm" name="validez" value="30 días" />
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold mb-0" style="color:var(--primary)"><i class="bi bi-cart me-2"></i>Productos / Servicios</h6>
+                  <button type="button" class="btn btn-primary btn-sm" id="addItem">
+                    <i class="bi bi-plus-lg me-1"></i>Agregar ítem
+                  </button>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-items mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width:40%">Descripción</th>
+                        <th style="width:10%">Cant.</th>
+                        <th style="width:15%">P. Unit.</th>
+                        <th style="width:10%">IVA %</th>
+                        <th style="width:15%">Subtotal</th>
+                        <th style="width:10%"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="itemsContainer">
+                      <tr class="item-row">
+                        <td><input type="text" class="form-control form-control-sm item-desc" placeholder="Ej: Desarrollo web" /></td>
+                        <td><input type="number" class="form-control form-control-sm item-cant" value="1" min="1" step="1" /></td>
+                        <td><input type="number" class="form-control form-control-sm item-price" value="0" min="0" step="0.01" /></td>
+                        <td>
+                          <select class="form-select form-select-sm item-iva">
+                            <option value="0">0%</option>
+                            <option value="10.5">10.5%</option>
+                            <option value="21" selected>21%</option>
+                            <option value="27">27%</option>
+                          </select>
+                        </td>
+                        <td class="subtotal-display text-center">$0.00</td>
+                        <td class="text-center">
+                          <button type="button" class="btn btn-outline-danger btn-sm remove-item"><i class="bi bi-trash"></i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <input type="hidden" name="items" id="itemsJson" />
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6 offset-md-6">
+                  <div class="totals-box">
+                    <div class="total-line">
+                      <span class="text-muted">Subtotal sin IVA:</span>
+                      <span id="subtotalDisplay" class="fw-semibold">$0.00</span>
+                    </div>
+                    <div class="total-line">
+                      <span class="text-muted">IVA total:</span>
+                      <span id="ivaDisplay" class="fw-semibold">$0.00</span>
+                    </div>
+                    <div class="total-line grand-total">
+                      <span>Total final:</span>
+                      <span id="totalDisplay">$0.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label small fw-medium">Observaciones</label>
+                <textarea class="form-control form-control-sm" name="observaciones" rows="3" placeholder="Condiciones de pago, garantía, etc."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                <i class="bi bi-save me-2"></i>Generar Presupuesto
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card">
+          <div class="card-header">
+            <span><i class="bi bi-clock-history me-2" style="color:var(--primary)"></i>Historial</span>
+          </div>
+          <div class="card-body">
+            <form method="GET" action="/presupuestos" class="mb-3">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" name="q" placeholder="Buscar por cliente o N°..." value="<%= searchQuery %>" />
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                <% if (searchQuery) { %>
+                  <a href="/presupuestos" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+                <% } %>
+              </div>
+            </form>
+
+            <% if (presupuestos.length === 0) { %>
+              <div class="text-center text-muted py-5">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                <small><%= searchQuery ? 'No se encontraron resultados' : 'No hay presupuestos aún' %></small>
+              </div>
+            <% } else { %>
+              <div class="list-group list-group-flush">
+                <% presupuestos.forEach(p => { %>
+                  <a href="/presupuestos/<%= p.id %>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-0 border-bottom">
+                    <div>
+                      <div class="fw-semibold" style="color:var(--primary)"><%= p.numero %></div>
+                      <small class="text-muted"><%= p.cliente_nombre %> <%= p.cliente_apellido %></small>
+                    </div>
+                    <div class="text-end">
+                      <small class="text-muted d-block"><%= p.fecha %></small>
+                      <span class="badge bg-success bg-opacity-10 text-success fw-normal mt-1">$<%= parseFloat(p.total_final).toFixed(2) %></span>
+                    </div>
+                  </a>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const itemsContainer = document.getElementById("itemsContainer");
+      const addBtn = document.getElementById("addItem");
+      const itemsJson = document.getElementById("itemsJson");
+
+      const subtotalDisplay = document.getElementById("subtotalDisplay");
+      const ivaDisplay = document.getElementById("ivaDisplay");
+      const totalDisplay = document.getElementById("totalDisplay");
+
+      function createRow(index) {
+        return `
+          <tr class="item-row">
+            <td><input type="text" class="form-control form-control-sm item-desc" placeholder="Ej: Desarrollo web" /></td>
+            <td><input type="number" class="form-control form-control-sm item-cant" value="1" min="1" step="1" /></td>
+            <td><input type="number" class="form-control form-control-sm item-price" value="0" min="0" step="0.01" /></td>
+            <td>
+              <select class="form-select form-select-sm item-iva">
+                <option value="0">0%</option>
+                <option value="10.5">10.5%</option>
+                <option value="21" selected>21%</option>
+                <option value="27">27%</option>
+              </select>
+            </td>
+            <td class="subtotal-display text-center">$0.00</td>
+            <td class="text-center">
+              <button type="button" class="btn btn-outline-danger btn-sm remove-item"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>`;
+      }
+
+      function calcRow(row) {
+        const cant = parseFloat(row.querySelector(".item-cant").value) || 0;
+        const price = parseFloat(row.querySelector(".item-price").value) || 0;
+        const ivaPct = parseFloat(row.querySelector(".item-iva").value) || 0;
+        const subtotal = cant * price;
+        const subtotalCell = row.querySelector(".subtotal-display");
+        subtotalCell.textContent = "$" + subtotal.toFixed(2);
+        return { subtotal, ivaPct };
+      }
+
+      function calcTotals() {
+        const rows = itemsContainer.querySelectorAll(".item-row");
+        let totalSinIva = 0;
+        let totalIva = 0;
+        let totalFinal = 0;
+        const items = [];
+
+        rows.forEach((row) => {
+          const desc = row.querySelector(".item-desc").value || "";
+          const cant = parseFloat(row.querySelector(".item-cant").value) || 0;
+          const price = parseFloat(row.querySelector(".item-price").value) || 0;
+          const ivaPct = parseFloat(row.querySelector(".item-iva").value) || 0;
+          const subtotal = cant * price;
+
+          const base = ivaPct > 0 ? subtotal / (1 + ivaPct / 100) : subtotal;
+          const ivaAmount = subtotal - base;
+
+          totalSinIva += base;
+          totalIva += ivaAmount;
+          totalFinal += subtotal;
+
+          items.push({
+            descripcion: desc,
+            cantidad: cant,
+            precio_unitario: price,
+            iva: ivaPct,
+            subtotal: subtotal,
+          });
+        });
+
+        subtotalDisplay.textContent = "$" + totalSinIva.toFixed(2);
+        ivaDisplay.textContent = "$" + totalIva.toFixed(2);
+        totalDisplay.textContent = "$" + totalFinal.toFixed(2);
+        itemsJson.value = JSON.stringify(items);
+      }
+
+      function attachEvents(row) {
+        row.querySelectorAll(".item-cant, .item-price, .item-iva").forEach((el) => {
+          el.addEventListener("input", function () {
+            calcRow(row);
+            calcTotals();
+          });
+          el.addEventListener("change", function () {
+            calcRow(row);
+            calcTotals();
+          });
+        });
+        row.querySelector(".remove-item").addEventListener("click", function () {
+          if (itemsContainer.querySelectorAll(".item-row").length > 1) {
+            row.remove();
+            calcTotals();
+          }
+        });
+        row.querySelectorAll(".item-desc").forEach((el) => {
+          el.addEventListener("input", calcTotals);
+        });
+      }
+
+      addBtn.addEventListener("click", function () {
+        const index = itemsContainer.querySelectorAll(".item-row").length;
+        const div = document.createElement("tbody");
+        div.innerHTML = createRow(index);
+        const newRow = div.firstElementChild;
+        itemsContainer.appendChild(newRow);
+        attachEvents(newRow);
+        calcTotals();
+      });
+
+      document.querySelectorAll(".item-row").forEach((row) => {
+        attachEvents(row);
+        calcRow(row);
+      });
+      calcTotals();
+
+      document.getElementById("logoInput").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (ev) {
+            const preview = document.getElementById("logoPreview");
+            preview.src = ev.target.result;
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
