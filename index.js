@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const MySQLStore = require('express-mysql-session')(session);
 const helmet = require("helmet");
 
 require('dotenv').config();
@@ -17,7 +18,25 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const sessionStore = new MySQLStore({
+    host: process.env.K_DB_HOST || process.env.DB_HOST || 'localhost',
+    user: process.env.K_DB_USER || process.env.DB_USER || 'root',
+    password: process.env.K_DB_PASS || process.env.DB_PASS || '',
+    database: process.env.K_DB_NAME || process.env.DB_NAME || 'sql10829811',
+    port: parseInt(process.env.K_DB_PORT || process.env.DB_PORT || 3306),
+    createDatabaseTable: true,
+    schema: {
+        tableName: 'ksc_sessions',
+        columnNames: {
+            session_id: 'id',
+            expires: 'expires',
+            data: 'data'
+        }
+    }
+});
+
 app.use(session({
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || 'kiosco-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
