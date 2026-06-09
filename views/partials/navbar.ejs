@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4" href="#">
+      <i class="bi bi-hexagon-fill text-primary me-2"></i>Nexus<span class="text-primary">Tech</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <% menuItems.forEach(item => { %>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="<%= item.href %>"><%= item.label %></a>
+        </li>
+        <% }) %>
+        <li class="nav-item ms-lg-2">
+          <a href="#contacto" class="btn btn-primary btn-sm fw-semibold px-4 nav-cta">
+            <i class="bi bi-whatsapp me-1"></i> Contáctanos
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

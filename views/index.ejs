@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <meta name="description" content="<%= description %>" />
+  <meta name="keywords" content="desarrollo web, automatización IA, chatbots WhatsApp, sistemas empresariales, landing page" />
+  <meta name="author" content="Nexus Tech" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="Nexus Tech - Transformación Digital" />
+  <meta property="og:description" content="Desarrollo web, automatizaciones con IA, chatbots para WhatsApp y sistemas empresariales." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nexustech.com" />
+  <meta property="og:image" content="/img/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nexus Tech - Transformación Digital" />
+  <meta name="twitter:description" content="Desarrollo web, automatizaciones con IA, chatbots y sistemas empresariales." />
+
+  <link rel="canonical" href="https://nexustech.com" />
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { menuItems }) %>
+
+  <main>
+    <section id="hero" class="hero d-flex align-items-center">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-up">
+            <span class="badge bg-primary-subtle text-primary-emphasis fs-6 px-3 py-2 mb-3">
+              <i class="bi bi-stars me-1"></i> Transformación Digital
+            </span>
+            <h1 class="display-4 fw-bold mb-3">
+              Potencia tu negocio con<br />
+              <span class="text-gradient">tecnología inteligente</span>
+            </h1>
+            <p class="lead text-muted mb-4">
+              Desarrollo web moderno, automatizaciones con IA, chatbots para WhatsApp
+              y sistemas empresariales diseñados para hacer crecer tu empresa.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="#contacto" class="btn btn-primary btn-lg px-4 py-3 fw-semibold">
+                <i class="bi bi-calendar-check me-2"></i>Solicitar Cotización
+              </a>
+              <a href="#servicios" class="btn btn-outline-secondary btn-lg px-4 py-3 fw-semibold">
+                <i class="bi bi-play-circle me-2"></i>Ver Servicios
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
+            <img src="/img/hero-illustration.svg" alt="Transformación digital" class="img-fluid hero-img" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      <div class="hero-shape"></div>
+    </section>
+
+    <section id="beneficios" class="section-padding bg-light">
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">Beneficios</span>
+          <h2 class="display-6 fw-bold">¿Por qué elegirnos?</h2>
+          <p class="text-muted fs-5 mt-2">Más de 50 empresas confían en nosotros para su transformación digital.</p>
+        </div>
+        <div class="row g-4">
+          <% beneficios.forEach((b, i) => { %>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="<%= i * 100 %>">
+            <div class="card border-0 shadow-sm h-100 benefit-card">
+              <div class="card-body text-center p-4">
+                <div class="icon-box mb-3">
+                  <i class="bi <%= b.icon %> fs-1 text-primary"></i>
+                </div>
+                <h5 class="fw-bold"><%= b.title %></h5>
+                <p class="text-muted mb-0"><%= b.desc %></p>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" class="section-padding">
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">Servicios</span>
+          <h2 class="display-6 fw-bold">Soluciones que impulsan tu negocio</h2>
+          <p class="text-muted fs-5 mt-2">Tecnología de punta para cada necesidad empresarial.</p>
+        </div>
+        <div class="row g-4">
+          <% servicios.forEach((s, i) => { %>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="<%= i * 100 %>">
+            <div class="card border-0 shadow-sm h-100 service-card">
+              <div class="card-body text-center p-4">
+                <div class="icon-box icon-box-lg mb-3">
+                  <i class="bi <%= s.icon %> fs-1 text-white"></i>
+                </div>
+                <h5 class="fw-bold"><%= s.title %></h5>
+                <p class="text-muted mb-3"><%= s.desc %></p>
+                <a href="#contacto" class="btn btn-sm btn-outline-primary stretched-link">Saber más <i class="bi bi-arrow-right ms-1"></i></a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+
+    <section id="caracteristicas" class="section-padding bg-light">
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">Características</span>
+          <h2 class="display-6 fw-bold">Calidad en cada detalle</h2>
+          <p class="text-muted fs-5 mt-2">Construimos soluciones pensando en la excelencia.</p>
+        </div>
+        <div class="row g-4">
+          <% caracteristicas.forEach((c, i) => { %>
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<%= i * 100 %>">
+            <div class="d-flex gap-3 feature-item">
+              <div class="icon-box flex-shrink-0">
+                <i class="bi <%= c.icon %> fs-3 text-primary"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold"><%= c.title %></h5>
+                <p class="text-muted mb-0"><%= c.desc %></p>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonios" class="section-padding">
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">Testimonios</span>
+          <h2 class="display-6 fw-bold">Lo que dicen nuestros clientes</h2>
+        </div>
+        <div class="row g-4">
+          <% testimonios.forEach((t, i) => { %>
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="<%= i * 100 %>">
+            <div class="card border-0 shadow-sm h-100 testimonial-card">
+              <div class="card-body p-4">
+                <div class="mb-3">
+                  <% for(let s=0; s<t.rating; s++) { %>
+                    <i class="bi bi-star-fill text-warning"></i>
+                  <% } %>
+                </div>
+                <p class="mb-4 fst-italic">"<%= t.text %>"</p>
+                <div class="d-flex align-items-center">
+                  <div class="avatar-placeholder me-3"><%= t.name.charAt(0) %></div>
+                  <div>
+                    <h6 class="fw-bold mb-0"><%= t.name %></h6>
+                    <small class="text-muted"><%= t.role %></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section-padding bg-light">
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">FAQ</span>
+          <h2 class="display-6 fw-bold">Preguntas frecuentes</h2>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8" data-aos="fade-up">
+            <div class="accordion" id="faqAccordion">
+              <% faqs.forEach((f, i) => { %>
+              <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button <%= i !== 0 ? 'collapsed' : '' %> rounded-3 fw-semibold" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq<%= i %>">
+                    <%= f.q %>
+                  </button>
+                </h3>
+                <div id="faq<%= i %>" class="accordion-collapse collapse <%= i === 0 ? 'show' : '' %>"
+                  data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted"><%= f.a %></div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section-padding">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5" data-aos="fade-up">
+            <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 mb-2">Contacto</span>
+            <h2 class="display-6 fw-bold">Hablemos de tu proyecto</h2>
+            <p class="text-muted fs-5">Cuéntanos sobre tu idea y te enviaremos una propuesta personalizada sin compromiso.</p>
+            <ul class="list-unstyled mt-4">
+              <li class="mb-3"><i class="bi bi-envelope-fill text-primary me-2"></i> hola@nexustech.com</li>
+              <li class="mb-3"><i class="bi bi-telephone-fill text-primary me-2"></i> +1 (555) 123-4567</li>
+              <li class="mb-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i> Ciudad de México, MX</li>
+            </ul>
+          </div>
+          <div class="col-lg-6 offset-lg-1" data-aos="fade-up" data-aos-delay="100">
+            <form action="/contacto" method="POST" class="card border-0 shadow-sm p-4">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label fw-medium">Nombre completo</label>
+                  <input type="text" class="form-control form-control-lg" id="nombre" name="nombre" required
+                    placeholder="Tu nombre" />
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label fw-medium">Correo electrónico</label>
+                  <input type="email" class="form-control form-control-lg" id="email" name="email" required
+                    placeholder="tucorreo@ejemplo.com" />
+                </div>
+                <div class="col-md-12">
+                  <label for="telefono" class="form-label fw-medium">Teléfono</label>
+                  <input type="tel" class="form-control form-control-lg" id="telefono" name="telefono"
+                    placeholder="+52 55 1234 5678" />
+                </div>
+                <div class="col-12">
+                  <label for="mensaje" class="form-label fw-medium">Mensaje</label>
+                  <textarea class="form-control form-control-lg" id="mensaje" name="mensaje" rows="4" required
+                    placeholder="Cuéntanos sobre tu proyecto..."></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold">
+                    <i class="bi bi-send me-2"></i>Enviar Mensaje
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <a href="#" id="scrollTop" class="scroll-top btn btn-primary rounded-circle" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up"></i>
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
