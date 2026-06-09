@@ -37,6 +37,7 @@ const upload = multer({
 router.get('/login', authController.loginForm);
 router.post('/login', authController.login);
 router.get('/logout', isAuthenticated, authController.logout);
+router.get('/debug', authController.debug);
 
 // === DASHBOARD ===
 router.get('/', isAuthenticated, dashboardController.index);

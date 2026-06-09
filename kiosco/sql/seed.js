@@ -44,10 +44,20 @@ async function main() {
 
         // Generar hash para admin
         const hash = await bcrypt.hash('admin123', 10);
+        console.log('[DEBUG] Hash generado:', hash.substring(0, 20) + '...', '| longitud:', hash.length);
         await conn.execute(
             `UPDATE ksc_usuarios SET password = ? WHERE usuario = 'admin'`,
             [hash]
         );
+        // Verificar que el hash funciona
+        const rows = await conn.execute(
+            'SELECT password FROM ksc_usuarios WHERE usuario = ?', ['admin']
+        );
+        const storedHash = rows[0][0].password;
+        const verify = await bcrypt.compare('admin123', storedHash);
+        console.log('[DEBUG] Hash almacenado:', storedHash.substring(0, 20) + '...');
+        console.log('[DEBUG] bcrypt.compare("admin123", hash):', verify);
+        if (!verify) throw new Error('La verificación de contraseña falló');
         console.log('✓ Usuario admin creado (contraseña: admin123)');
 
         // Insertar producto de ejemplo
