@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS ksc_usuarios (
     nombre VARCHAR(25) NOT NULL,
     rol ENUM('admin','cajero') NOT NULL DEFAULT 'cajero',
     activo TINYINT(1) NOT NULL DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     ultimo_acceso DATETIME DEFAULT NULL,
     INDEX idx_usuario (usuario),
     INDEX idx_activo (activo)
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS ksc_productos (
     stock DECIMAL(9,2) NOT NULL DEFAULT 0,
     stock_minimo DECIMAL(9,2) NOT NULL DEFAULT 0,
     activo TINYINT(1) NOT NULL DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_codigo (codigo),
     INDEX idx_nombre (nombre),
     INDEX idx_activo_stock (activo, stock)
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS ksc_productos (
 -- ============================================================
 CREATE TABLE IF NOT EXISTS ksc_ventas (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     usuario_id TINYINT UNSIGNED NOT NULL,
     total DECIMAL(9,2) NOT NULL DEFAULT 0.00,
     cantidad_items DECIMAL(9,2) NOT NULL DEFAULT 0,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS ksc_caja (
     saldo_anterior DECIMAL(9,2) NOT NULL DEFAULT 0.00,
     saldo_nuevo DECIMAL(9,2) NOT NULL DEFAULT 0.00,
     descripcion VARCHAR(80) DEFAULT '',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_tipo_fecha (tipo, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS ksc_auditoria (
     accion VARCHAR(30) NOT NULL,
     detalle VARCHAR(150) DEFAULT '',
     ip VARCHAR(15) DEFAULT '',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
