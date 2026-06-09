@@ -115,7 +115,4 @@ INSERT INTO ksc_config (clave, valor) VALUES
     ('logo', '')
 ON DUPLICATE KEY UPDATE clave=clave;
 
--- Contraseña: admin123 (bcrypt hash)
-INSERT INTO ksc_usuarios (usuario, password, nombre, rol) VALUES
-    ('admin', '$2b$10$8KzQMGx5C5Kc5Q5y5z5h5u5y5z5h5u5y5z5h5u5y5z5h5u5y5z5h', 'Administrador', 'admin')
-ON DUPLICATE KEY UPDATE usuario=usuario;
+-- El usuario admin se crea desde seed.js con bcrypt

@@ -42,29 +42,30 @@ async function main() {
         await conn.query(schema);
         console.log('✓ Tablas creadas correctamente');
 
-        // Generar hash para admin
+        // Crear usuario admin con hash correcto
         const hash = await bcrypt.hash('admin123', 10);
-        console.log('[DEBUG] Hash generado:', hash.substring(0, 20) + '...', '| longitud:', hash.length);
-        await conn.execute(
-            `UPDATE ksc_usuarios SET password = ? WHERE usuario = 'admin'`,
-            [hash]
+        console.log('[DEBUG] Hash generado:', hash, '| longitud:', hash.length);
+        await conn.query(
+            `INSERT INTO ksc_usuarios (usuario, password, nombre, rol) VALUES (?, ?, ?, ?)
+             ON DUPLICATE KEY UPDATE password = ?`,
+            ['admin', hash, 'Administrador', 'admin', hash]
         );
         // Verificar que el hash funciona
-        const rows = await conn.execute(
+        const [rows] = await conn.query(
             'SELECT password FROM ksc_usuarios WHERE usuario = ?', ['admin']
         );
-        const storedHash = rows[0][0].password;
+        const storedHash = rows[0].password;
+        console.log('[DEBUG] Hash almacenado:', storedHash, '| longitud:', storedHash.length);
         const verify = await bcrypt.compare('admin123', storedHash);
-        console.log('[DEBUG] Hash almacenado:', storedHash.substring(0, 20) + '...');
         console.log('[DEBUG] bcrypt.compare("admin123", hash):', verify);
-        if (!verify) throw new Error('La verificación de contraseña falló');
+        if (!verify) throw new Error('La verificación de contraseña falló (hash: ' + storedHash + ')');
         console.log('✓ Usuario admin creado (contraseña: admin123)');
 
         // Insertar producto de ejemplo
-        await conn.execute(
+        await conn.query(
             `INSERT INTO ksc_productos (codigo, nombre, precio_compra, precio_venta, stock, stock_minimo)
              VALUES (?, ?, ?, ?, ?, ?)
-             ON DUPLICATE KEY UPDATE nombre=nombre`,
+             ON DUPLICATE KEY UPDATE codigo=codigo`,
             ['PROD-001', 'Producto de ejemplo', 50.00, 100.00, 10, 2]
         );
         console.log('✓ Producto de ejemplo creado');
