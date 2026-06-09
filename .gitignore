@@ -1,1 +1,5 @@
-
+node_modules/
+database/presupuestos.db
+uploads/*.png
+uploads/*.jpg
+uploads/*.jpeg

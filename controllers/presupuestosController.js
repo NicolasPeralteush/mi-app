@@ -4,25 +4,25 @@ const pdfService = require("../services/pdfService");
 const controller = {
   list(req, res) {
     const query = req.query.q || "";
+    let presupuestos;
 
-    const renderList = (err, presupuestos) => {
-      if (err) {
-        console.error("Error al listar presupuestos:", err);
-        return res.status(500).send("Error al cargar presupuestos");
+    try {
+      if (query.trim()) {
+        presupuestos = db.search(query.trim());
+      } else {
+        presupuestos = db.getAll();
       }
-      res.render("presupuestos", {
-        presupuestos,
-        searchQuery: query,
-        formData: null,
-        error: null,
-      });
-    };
-
-    if (query.trim()) {
-      db.search(query.trim(), renderList);
-    } else {
-      db.getAll(renderList);
+    } catch (err) {
+      console.error("Error al listar presupuestos:", err);
+      return res.status(500).send("Error al cargar presupuestos");
     }
+
+    res.render("presupuestos", {
+      presupuestos,
+      searchQuery: query,
+      formData: null,
+      error: null,
+    });
   },
 
   create(req, res) {
@@ -67,15 +67,8 @@ const controller = {
 
     const totalFinal = items.reduce((sum, item) => sum + (parseFloat(item.subtotal) || 0), 0);
 
-    db.getNextNumero((err, result) => {
-      if (err) {
-        return res.render("presupuestos", {
-          presupuestos: [],
-          searchQuery: "",
-          formData: body,
-          error: "Error al generar número de presupuesto.",
-        });
-      }
+    try {
+      const result = db.getNextNumero();
 
       const data = {
         numero: result.numero,
@@ -99,49 +92,45 @@ const controller = {
         logo_path: logoPath,
       };
 
-      db.create(data, (err, result) => {
-        if (err) {
-          console.error("Error al guardar:", err);
-          return res.render("presupuestos", {
-            presupuestos: [],
-            searchQuery: "",
-            formData: body,
-            error: "Error al guardar el presupuesto en la base de datos.",
-          });
-        }
-        res.redirect(`/presupuestos/${result.id}`);
+      const saved = db.create(data);
+      res.redirect(`/presupuestos/${saved.id}`);
+    } catch (err) {
+      console.error("Error al guardar:", err);
+      return res.render("presupuestos", {
+        presupuestos: [],
+        searchQuery: "",
+        formData: body,
+        error: "Error al guardar el presupuesto en la base de datos.",
       });
-    });
+    }
   },
 
   view(req, res) {
     const id = req.params.id;
-    db.getById(id, (err, presupuesto) => {
-      if (err || !presupuesto) {
+    try {
+      const presupuesto = db.getById(id);
+      if (!presupuesto) {
         return res.status(404).send("Presupuesto no encontrado");
       }
-      try {
-        presupuesto.items = JSON.parse(presupuesto.items);
-      } catch {
-        presupuesto.items = [];
-      }
+      presupuesto.items = JSON.parse(presupuesto.items);
       res.render("presupuesto-view", { presupuesto });
-    });
+    } catch (err) {
+      return res.status(404).send("Presupuesto no encontrado");
+    }
   },
 
   downloadPDF(req, res) {
     const id = req.params.id;
-    db.getById(id, (err, presupuesto) => {
-      if (err || !presupuesto) {
+    try {
+      const presupuesto = db.getById(id);
+      if (!presupuesto) {
         return res.status(404).send("Presupuesto no encontrado");
       }
-      try {
-        presupuesto.items = JSON.parse(presupuesto.items);
-      } catch {
-        presupuesto.items = [];
-      }
+      presupuesto.items = JSON.parse(presupuesto.items);
       pdfService.generarPDF(presupuesto, res);
-    });
+    } catch (err) {
+      return res.status(404).send("Presupuesto no encontrado");
+    }
   },
 };
 
