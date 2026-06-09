@@ -1,0 +1,68 @@
+<%- include('../partials/header', { titulo: 'Historial de Caja', usuario: usuario, seccion: 'caja' }) %>
+
+<div class="card">
+    <div class="card-header"><i class="bi bi-clock-history me-2"></i>Movimientos de Caja</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Tipo</th>
+                        <th class="text-end">Monto</th>
+                        <th class="text-end">Saldo Ant.</th>
+                        <th class="text-end">Saldo Nuevo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (movimientos.length === 0) { %>
+                        <tr><td colspan="8" class="text-center text-muted py-4"><i class="bi bi-inbox fs-4 d-block mb-1"></i><small>Sin movimientos</small></td></tr>
+                    <% } else { %>
+                        <% movimientos.forEach(function(m) { %>
+                            <tr>
+                                <td><small><%= m.id %></small></td>
+                                <td><small><%= new Date(m.created_at).toLocaleString('es-ES') %></small></td>
+                                <td><small><%= m.usuario_nombre || '-' %></small></td>
+                                <td>
+                                    <% if (m.tipo === 'apertura') { %><span class="badge bg-success">Apertura</span>
+                                    <% } else if (m.tipo === 'cierre') { %><span class="badge bg-warning">Cierre</span>
+                                    <% } else if (m.tipo === 'ingreso') { %><span class="badge bg-info">Ingreso</span>
+                                    <% } else if (m.tipo === 'egreso') { %><span class="badge bg-danger">Egreso</span>
+                                    <% } else if (m.tipo === 'venta') { %><span class="badge bg-primary">Venta</span>
+                                    <% } %>
+                                </td>
+                                <td class="text-end fw-bold <%= m.tipo === 'egreso' ? 'text-danger' : 'text-success' %>">$<%= parseFloat(m.monto).toFixed(2) %></td>
+                                <td class="text-end">$<%= parseFloat(m.saldo_anterior).toFixed(2) %></td>
+                                <td class="text-end">$<%= parseFloat(m.saldo_nuevo).toFixed(2) %></td>
+                                <td><small class="text-muted"><%= m.descripcion || '-' %></small></td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <% if (pages > 1) { %>
+            <nav class="mt-3">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page - 1 %>"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <% for (let i = 1; i <= pages; i++) { %>
+                        <li class="page-item <%= i === page ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%= page >= pages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page + 1 %>"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

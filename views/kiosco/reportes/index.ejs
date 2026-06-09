@@ -1,0 +1,102 @@
+<%- include('../partials/header', { titulo: 'Reportes', usuario: usuario, seccion: 'reportes' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0"><i class="bi bi-graph-up me-2"></i>Reportes</h5>
+    <div class="d-flex gap-2">
+        <a href="/kiosco/reportes/ventas/pdf?desde=<%= inicioMes %>&hasta=<%= finMes %>" class="btn btn-sm btn-danger rounded-pill"><i class="bi bi-filetype-pdf me-1"></i>PDF</a>
+        <a href="/kiosco/reportes/ventas/excel?desde=<%= inicioMes %>&hasta=<%= finMes %>" class="btn btn-sm btn-success rounded-pill"><i class="bi bi-file-earmark-excel me-1"></i>Excel</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-calendar-week me-2"></i>Ventas por Día <small class="text-muted">(últimos 15)</small></div>
+            <div class="card-body p-0">
+                <% if (ventasPorDia.length === 0) { %>
+                    <div class="text-center text-muted py-4"><small>Sin datos</small></div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                            <thead><tr><th>Fecha</th><th class="text-end">Ventas</th><th class="text-end">Total</th></tr></thead>
+                            <tbody>
+                                <% ventasPorDia.forEach(function(v) { %>
+                                    <tr>
+                                        <td><small><%= v.dia %></small></td>
+                                        <td class="text-end"><%= v.cantidad %></td>
+                                        <td class="text-end fw-bold">$<%= parseFloat(v.total).toFixed(2) %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-calendar-month me-2"></i>Ventas por Mes <small class="text-muted">(últimos 12)</small></div>
+            <div class="card-body p-0">
+                <% if (ventasPorMes.length === 0) { %>
+                    <div class="text-center text-muted py-4"><small>Sin datos</small></div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                            <thead><tr><th>Mes</th><th class="text-end">Ventas</th><th class="text-end">Total</th></tr></thead>
+                            <tbody>
+                                <% ventasPorMes.forEach(function(v) { %>
+                                    <tr>
+                                        <td><small><%= v.mes %></small></td>
+                                        <td class="text-end"><%= v.cantidad %></td>
+                                        <td class="text-end fw-bold">$<%= parseFloat(v.total).toFixed(2) %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-trophy me-2"></i>Productos Más Vendidos</div>
+            <div class="card-body p-0">
+                <% if (productosMasVendidos.length === 0) { %>
+                    <div class="text-center text-muted py-4"><small>Sin datos</small></div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                            <thead><tr><th>Producto</th><th class="text-end">Vendidos</th><th class="text-end">Ingresos</th></tr></thead>
+                            <tbody>
+                                <% productosMasVendidos.forEach(function(p) { %>
+                                    <tr>
+                                        <td><small><%= p.nombre %> <span class="text-muted">(<%= p.codigo %>)</span></small></td>
+                                        <td class="text-end"><%= parseFloat(p.total_vendido).toFixed(0) %></td>
+                                        <td class="text-end fw-bold">$<%= parseFloat(p.total_ingresos).toFixed(2) %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-piggy-bank me-2"></i>Ganancia Estimada</div>
+            <div class="card-body text-center">
+                <h2 class="fw-bold text-success">$<%= ganancia %></h2>
+                <p class="text-muted small mb-0">Período: <%= inicioMes %> al <%= finMes %></p>
+                <small class="text-muted">Basado en diferencia entre precio de venta y costo de compra</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,122 @@
+<%- include('../partials/header', { titulo: 'Caja Diaria', usuario: usuario, seccion: 'caja' }) %>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger py-2 small"><i class="bi bi-exclamation-circle me-1"></i><%= error %></div>
+<% } %>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center h-100">
+            <div class="card-body py-3">
+                <small class="text-muted text-uppercase fw-semibold" style="font-size:10px;">Estado</small>
+                <h4 class="fw-bold mb-0 <%= estado.abierta ? 'text-success' : 'text-danger' %>"><%= estado.abierta ? 'ABIERTA' : 'CERRADA' %></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center h-100">
+            <div class="card-body py-3">
+                <small class="text-muted text-uppercase fw-semibold" style="font-size:10px;">Saldo Actual</small>
+                <h4 class="fw-bold mb-0">$<%= parseFloat(estado.saldo || 0).toFixed(2) %></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center h-100">
+            <div class="card-body py-3">
+                <small class="text-muted text-uppercase fw-semibold" style="font-size:10px;">Ventas Hoy</small>
+                <h4 class="fw-bold mb-0 text-success">$<%= parseFloat(resumen.ventas || 0).toFixed(2) %></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center h-100">
+            <div class="card-body py-3">
+                <small class="text-muted text-uppercase fw-semibold" style="font-size:10px;">Ing/Egr</small>
+                <h4 class="fw-bold mb-0"><span class="text-success">$<%= parseFloat(resumen.ingresos || 0).toFixed(2) %></span> / <span class="text-danger">$<%= parseFloat(resumen.egresos || 0).toFixed(2) %></span></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <% if (!estado.abierta) { %>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-unlock me-2"></i>Aperturar Caja</div>
+            <div class="card-body">
+                <form action="/kiosco/caja/apertura" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Monto Inicial</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" name="monto" value="0" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100"><i class="bi bi-play-fill me-1"></i>Aperturar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } else { %>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-plus-circle me-2 text-success"></i>Ingreso</div>
+            <div class="card-body">
+                <form action="/kiosco/caja/ingreso" method="POST">
+                    <div class="mb-2">
+                        <label class="form-label small fw-medium">Monto</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" name="monto" step="0.01" min="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Descripción</label>
+                        <input type="text" class="form-control form-control-sm" name="descripcion" maxlength="80" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100"><i class="bi bi-arrow-down-circle me-1"></i>Ingresar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-dash-circle me-2 text-danger"></i>Egreso</div>
+            <div class="card-body">
+                <form action="/kiosco/caja/egreso" method="POST">
+                    <div class="mb-2">
+                        <label class="form-label small fw-medium">Monto</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" name="monto" step="0.01" min="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Descripción</label>
+                        <input type="text" class="form-control form-control-sm" name="descripcion" maxlength="80" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100"><i class="bi bi-arrow-up-circle me-1"></i>Egresar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-lock me-2 text-warning"></i>Cerrar Caja</div>
+            <div class="card-body text-center">
+                <p class="text-muted small">Saldo actual: <strong>$<%= parseFloat(estado.saldo || 0).toFixed(2) %></strong></p>
+                <form action="/kiosco/caja/cierre" method="POST" onsubmit="return confirm('¿Confirmar cierre de caja?')">
+                    <button type="submit" class="btn btn-warning w-100"><i class="bi bi-stop-fill me-1"></i>Cerrar Caja</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+
+<div class="text-end mt-3">
+    <a href="/kiosco/caja/historial" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clock-history me-1"></i>Ver historial completo</a>
+</div>
+
+<%- include('../partials/footer') %>

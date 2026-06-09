@@ -1,5 +1,9 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
+const helmet = require("helmet");
+
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,13 +11,24 @@ const PORT = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'kiosco-secret-key-change-in-production',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, httpOnly: true, maxAge: 8 * 60 * 60 * 1000 }
+}));
+
 const presupuestosRouter = require("./routes/presupuestos");
 app.use("/presupuestos", presupuestosRouter);
+
+const kioscoRouter = require("./kiosco/routes/kiosco");
+app.use("/kiosco", kioscoRouter);
 
 const menuItems = [
   { label: "Beneficios", href: "#beneficios" },

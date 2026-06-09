@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof titulo !== 'undefined' ? titulo : 'Kiosco' %> - Sistema de Gestión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root { --sidebar-w: 220px; }
+        body { background: #f5f6fa; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        .wrapper { display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-w); background: #1e1e2d; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; transition: all .3s; overflow-y: auto; }
+        .sidebar .brand { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .sidebar .brand i { color: #50cd89; }
+        .sidebar .brand span { color: #fff; font-weight: 700; font-size: 1.1rem; }
+        .sidebar .nav-link { color: rgba(255,255,255,.55); padding: 10px 20px; font-size: .88rem; border-radius: 0; transition: all .2s; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background: rgba(255,255,255,.06); }
+        .sidebar .nav-link i { width: 22px; font-size: 1.1rem; }
+        .sidebar .nav-link .badge { font-size: 9px; }
+        .sidebar .submenu { padding-left: 38px; }
+        .sidebar .submenu .nav-link { font-size: .82rem; padding: 6px 20px; }
+        .content { margin-left: var(--sidebar-w); flex: 1; padding: 20px 25px; min-height: 100vh; }
+        .navbar-top { background: #fff; border-radius: 16px; padding: 10px 20px; margin-bottom: 20px; box-shadow: 0 2px 15px rgba(0,0,0,.04); }
+        .card { border: none; border-radius: 16px; box-shadow: 0 2px 15px rgba(0,0,0,.04); }
+        .card-header { background: #fff; border-bottom: 1px solid #f0f0f0; font-weight: 600; border-radius: 16px 16px 0 0 !important; }
+        .btn { border-radius: 50px; }
+        .btn-sm { border-radius: 50px; }
+        .form-control, .form-select { border-radius: 10px; }
+        .table th { font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .3px; color: #6c757d; }
+        .pagination .page-link { border-radius: 50px !important; margin: 0 2px; border: none; }
+        @media (max-width: 768px) {
+            .sidebar { width: 60px; }
+            .sidebar .brand span, .sidebar .nav-link span { display: none; }
+            .sidebar .nav-link { text-align: center; padding: 12px 8px; }
+            .sidebar .nav-link i { width: auto; font-size: 1.3rem; }
+            .content { margin-left: 60px; padding: 15px; }
+            .sidebar .submenu { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <nav class="sidebar">
+        <div class="brand">
+            <a href="/kiosco" class="text-decoration-none d-flex align-items-center">
+                <i class="bi bi-shop me-2 fs-4"></i>
+                <span>Kiosco</span>
+            </a>
+        </div>
+        <ul class="nav flex-column mt-2">
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'dashboard' ? 'active' : '' %>" href="/kiosco">
+                    <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'productos' ? 'active' : '' %>" href="/kiosco/productos">
+                    <i class="bi bi-box"></i> <span>Productos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'ventas' ? 'active' : '' %>" href="/kiosco/ventas">
+                    <i class="bi bi-cart"></i> <span>Vender</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'ventas_historial' ? 'active' : '' %>" href="/kiosco/ventas/historial">
+                    <i class="bi bi-clock-history"></i> <span>Historial Vtas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'caja' ? 'active' : '' %>" href="/kiosco/caja">
+                    <i class="bi bi-cash-stack"></i> <span>Caja</span>
+                </a>
+            </li>
+            <% if (usuario && usuario.rol === 'admin') { %>
+            <li class="nav-item mt-2">
+                <small class="text-muted px-3 text-uppercase" style="font-size:9px;letter-spacing:1px;">Admin</small>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'reportes' ? 'active' : '' %>" href="/kiosco/reportes">
+                    <i class="bi bi-graph-up"></i> <span>Reportes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'admin_usuarios' ? 'active' : '' %>" href="/kiosco/admin/usuarios">
+                    <i class="bi bi-people"></i> <span>Usuarios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'admin_config' ? 'active' : '' %>" href="/kiosco/admin/config">
+                    <i class="bi bi-gear"></i> <span>Configuración</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof seccion !== 'undefined' && seccion === 'admin_auditoria' ? 'active' : '' %>" href="/kiosco/admin/auditoria">
+                    <i class="bi bi-journal-text"></i> <span>Auditoría</span>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+    </nav>
+    <div class="content">
+        <div class="navbar-top d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-secondary d-md-none" onclick="document.querySelector('.sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
+                <span class="fw-semibold small"><%= typeof titulo !== 'undefined' ? titulo : '' %></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="small text-muted"><i class="bi bi-person-circle me-1"></i><%= usuario ? usuario.nombre : '' %> (<%= usuario ? usuario.rol : '' %>)</span>
+                <a href="/kiosco/logout" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-box-arrow-right"></i></a>
+            </div>
+        </div>

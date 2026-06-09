@@ -1,0 +1,113 @@
+<%- include('../partials/header', { titulo: 'Historial de Ventas', usuario: usuario, seccion: 'ventas_historial' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history me-2"></i>Historial de Ventas</h5>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="GET" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <label class="form-label small">Desde</label>
+                <input type="date" class="form-control form-control-sm" name="desde" value="<%= fechaDesde %>">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small">Hasta</label>
+                <input type="date" class="form-control form-control-sm" name="hasta" value="<%= fechaHasta %>">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary btn-sm w-100"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th class="text-end">Items</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-center">Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (ventas.length === 0) { %>
+                        <tr><td colspan="6" class="text-center text-muted py-4"><i class="bi bi-inbox fs-4 d-block mb-1"></i><small>Sin ventas en este período</small></td></tr>
+                    <% } else { %>
+                        <% ventas.forEach(function(v) { %>
+                            <tr>
+                                <td><span class="badge bg-secondary bg-opacity-10 text-secondary">#<%= v.id %></span></td>
+                                <td><small><%= new Date(v.fecha).toLocaleString('es-ES') %></small></td>
+                                <td><%= v.usuario_nombre || '-' %></td>
+                                <td class="text-end"><%= v.cantidad_items %></td>
+                                <td class="text-end fw-bold text-success">$<%= parseFloat(v.total).toFixed(2) %></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info rounded-pill" onclick="verDetalle(<%= v.id %>)"><i class="bi bi-eye"></i></button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <% if (pages > 1) { %>
+            <nav class="mt-3">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page - 1 %>&desde=<%= fechaDesde %>&hasta=<%= fechaHasta %>"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <% for (let i = 1; i <= pages; i++) { %>
+                        <li class="page-item <%= i === page ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %>&desde=<%= fechaDesde %>&hasta=<%= fechaHasta %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%= page >= pages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page + 1 %>&desde=<%= fechaDesde %>&hasta=<%= fechaHasta %>"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        <% } %>
+    </div>
+</div>
+
+<div class="modal fade" id="detalleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Detalle de Venta <span id="detalleVentaId"></span></h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detalleVentaBody"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function verDetalle(id) {
+    try {
+        const res = await fetch('/kiosco/ventas/' + id + '/detalle');
+        const data = await res.json();
+        document.getElementById('detalleVentaId').textContent = '#' + id;
+
+        let html = '<div class="mb-3"><small class="text-muted">Fecha: ' + new Date(data.venta.fecha).toLocaleString('es-ES') + ' | Usuario: ' + (data.venta.usuario_nombre || '-') + '</small></div>';
+        html += '<table class="table table-sm"><thead><tr><th>Producto</th><th class="text-center">Cant</th><th class="text-end">P/U</th><th class="text-end">Subtotal</th></tr></thead><tbody>';
+        let total = 0;
+        data.detalle.forEach(function(d) {
+            const subtotal = d.cantidad * d.precio_unitario;
+            total += subtotal;
+            html += '<tr><td>' + (d.nombre || 'ID:' + d.producto_id) + '</td><td class="text-center">' + d.cantidad + '</td><td class="text-end">$' + parseFloat(d.precio_unitario).toFixed(2) + '</td><td class="text-end">$' + subtotal.toFixed(2) + '</td></tr>';
+        });
+        html += '</tbody><tfoot><tr class="fw-bold"><td colspan="3" class="text-end">Total:</td><td class="text-end text-success">$' + total.toFixed(2) + '</td></tr></tfoot></table>';
+        document.getElementById('detalleVentaBody').innerHTML = html;
+
+        new bootstrap.Modal(document.getElementById('detalleModal')).show();
+    } catch(e) {
+        alert('Error al cargar detalle');
+    }
+}
+</script>
+
+<%- include('../partials/footer') %>

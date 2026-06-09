@@ -1,0 +1,114 @@
+<%- include('../partials/header', { titulo: 'Gestión de Usuarios', usuario: usuario, seccion: 'admin_usuarios' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0"><i class="bi bi-people me-2"></i>Usuarios</h5>
+</div>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger py-2 small"><i class="bi bi-exclamation-circle me-1"></i><%= error %></div>
+<% } %>
+
+<div class="row g-3">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-person-plus me-2"></i>Nuevo Usuario</div>
+            <div class="card-body">
+                <form action="/kiosco/admin/usuarios" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Usuario</label>
+                        <input type="text" class="form-control form-control-sm" name="usuario" maxlength="15" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Nombre</label>
+                        <input type="text" class="form-control form-control-sm" name="nombre" maxlength="25" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Contraseña</label>
+                        <input type="password" class="form-control form-control-sm" name="password" minlength="4" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Rol</label>
+                        <select class="form-select form-select-sm" name="rol">
+                            <option value="cajero">Cajero</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-save me-1"></i>Crear Usuario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-list me-2"></i>Usuarios Registrados</div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                                <th class="text-center">Activo</th>
+                                <th>Último Acceso</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% usuarios.forEach(function(u) { %>
+                                <tr class="<%= !u.activo ? 'text-muted' : '' %>">
+                                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary"><%= u.usuario %></span></td>
+                                    <td><%= u.nombre %></td>
+                                    <td><span class="badge <%= u.rol === 'admin' ? 'bg-danger' : 'bg-info' %> bg-opacity-10 text-<%= u.rol === 'admin' ? 'danger' : 'info' %>"><%= u.rol %></span></td>
+                                    <td class="text-center">
+                                        <% if (u.activo) { %><i class="bi bi-check-circle text-success"></i><% } else { %><i class="bi bi-x-circle text-danger"></i><% } %>
+                                    </td>
+                                    <td><small><%= u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString('es-ES') : 'Nunca' %></small></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-warning rounded-pill" onclick="cambiarPass(<%= u.id %>, '<%= u.usuario %>')"><i class="bi bi-key"></i></button>
+                                        <form action="/kiosco/admin/usuarios/<%= u.id %>/toggle" method="POST" class="d-inline" onsubmit="return confirm('¿Cambiar estado del usuario?')">
+                                            <button class="btn btn-sm btn-outline-<%= u.activo ? 'danger' : 'success' %> rounded-pill"><i class="bi bi-<%= u.activo ? 'pause' : 'play' %>"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cambiar Password -->
+<div class="modal fade" id="passwordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" id="passwordForm">
+                <div class="modal-header">
+                    <h6 class="modal-title">Cambiar Contraseña - <span id="passUsuario"></span></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Nueva Contraseña</label>
+                        <input type="password" class="form-control" name="password" minlength="4" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-save me-1"></i>Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function cambiarPass(id, usuario) {
+    document.getElementById('passUsuario').textContent = usuario;
+    document.getElementById('passwordForm').action = '/kiosco/admin/usuarios/' + id + '/password';
+    new bootstrap.Modal(document.getElementById('passwordModal')).show();
+}
+</script>
+
+<%- include('../partials/footer') %>

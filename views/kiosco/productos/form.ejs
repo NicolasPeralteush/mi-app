@@ -1,0 +1,64 @@
+<%- include('../partials/header', { titulo: producto ? 'Editar Producto' : 'Nuevo Producto', usuario: usuario, seccion: 'productos' }) %>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi <%= producto ? 'bi-pencil' : 'bi-plus-circle' %> me-2"></i><%= producto ? 'Editar Producto' : 'Nuevo Producto' %>
+            </div>
+            <div class="card-body">
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger py-2 small"><i class="bi bi-exclamation-circle me-1"></i><%= error %></div>
+                <% } %>
+                <form action="/kiosco/productos<%= producto ? '/' + producto.id : '' %>" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Código <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="codigo" value="<%= producto ? producto.codigo : '' %>" maxlength="15" required style="text-transform:uppercase">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="nombre" value="<%= producto ? producto.nombre : '' %>" maxlength="40" required>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">Precio Compra</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" name="precio_compra" value="<%= producto ? producto.precio_compra : '0.00' %>" step="0.01" min="0">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">Precio Venta</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" name="precio_venta" value="<%= producto ? producto.precio_venta : '0.00' %>" step="0.01" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">Stock</label>
+                            <input type="number" class="form-control form-control-sm" name="stock" value="<%= producto ? producto.stock : '0' %>" step="0.01" min="0">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">Stock Mínimo</label>
+                            <input type="number" class="form-control form-control-sm" name="stock_minimo" value="<%= producto ? producto.stock_minimo : '0' %>" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" name="activo" value="1" <%= !producto || producto.activo ? 'checked' : '' %>>
+                            <label class="form-check-label small">Producto activo</label>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm flex-fill"><i class="bi bi-save me-1"></i><%= producto ? 'Actualizar' : 'Guardar' %></button>
+                        <a href="/kiosco/productos" class="btn btn-outline-secondary btn-sm"><i class="bi bi-x"></i> Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

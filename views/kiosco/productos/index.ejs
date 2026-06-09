@@ -1,0 +1,83 @@
+<%- include('../partials/header', { titulo: 'Productos', usuario: usuario, seccion: 'productos' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h5 class="fw-bold mb-0"><i class="bi bi-box me-2"></i>Productos</h5>
+        <small class="text-muted"><%= total %> producto(s)</small>
+    </div>
+    <% if (usuario && usuario.rol === 'admin') { %>
+        <a href="/kiosco/productos/nuevo" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Nuevo</a>
+    <% } %>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="GET" action="/kiosco/productos" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-sm" name="q" placeholder="Buscar por código o nombre..." value="<%= q %>">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-search"></i></button>
+                <% if (q) { %><a href="/kiosco/productos" class="btn btn-outline-secondary btn-sm"><i class="bi bi-x-lg"></i></a><% } %>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th class="text-end">P. Compra</th>
+                        <th class="text-end">P. Venta</th>
+                        <th class="text-end">Stock</th>
+                        <th class="text-center">Activo</th>
+                        <% if (usuario && usuario.rol === 'admin') { %><th class="text-center">Acción</th><% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (productos.length === 0) { %>
+                        <tr><td colspan="<%= usuario && usuario.rol === 'admin' ? 7 : 6 %>" class="text-center text-muted py-4"><i class="bi bi-inbox fs-4 d-block mb-1"></i><small><%= q ? 'Sin resultados' : 'No hay productos' %></small></td></tr>
+                    <% } else { %>
+                        <% productos.forEach(function(p) { %>
+                            <tr class="<%= !p.activo ? 'text-muted' : '' %>">
+                                <td><span class="badge bg-secondary bg-opacity-10 text-secondary"><%= p.codigo %></span></td>
+                                <td class="fw-medium"><%= p.nombre %></td>
+                                <td class="text-end">$<%= parseFloat(p.precio_compra).toFixed(2) %></td>
+                                <td class="text-end fw-bold">$<%= parseFloat(p.precio_venta).toFixed(2) %></td>
+                                <td class="text-end <%= p.stock <= p.stock_minimo ? 'text-danger' : '' %>"><%= p.stock %></td>
+                                <td class="text-center"><% if (p.activo) { %><i class="bi bi-check-circle text-success"></i><% } else { %><i class="bi bi-x-circle text-danger"></i><% } %></td>
+                                <% if (usuario && usuario.rol === 'admin') { %>
+                                    <td class="text-center">
+                                        <a href="/kiosco/productos/<%= p.id %>/editar" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-pencil"></i></a>
+                                        <form action="/kiosco/productos/<%= p.id %>/eliminar" method="POST" class="d-inline" onsubmit="return confirm('¿Desactivar producto?')">
+                                            <button class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <% if (pages > 1) { %>
+            <nav class="mt-3">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page - 1 %><%= q ? '&q='+q : '' %>"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <% for (let i = 1; i <= pages; i++) { %>
+                        <li class="page-item <%= i === page ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %><%= q ? '&q='+q : '' %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%= page >= pages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page + 1 %><%= q ? '&q='+q : '' %>"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
